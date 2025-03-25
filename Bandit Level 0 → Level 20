@@ -114,6 +114,7 @@ file directoryname/*
 ___
 # Level 5 -> 6
 ~~~
+''''blash
 bandit5@bandit:~$ cd inhere
 bandit5@bandit:~/inhere$ ls
 maybehere00  maybehere02  maybehere04  maybehere06  maybehere08  maybehere10  maybehere12  maybehere14  maybehere16  maybehere18
@@ -124,6 +125,7 @@ bandit5@bandit:~/inhere$ cat ./maybehere07/file2
 cat: ./maybehere07/file2: No such file or directory
 bandit5@bandit:~/inhere$ cat ./maybehere07/.file2
 DXjZPULLxYr17uwoI01bNLQbtFemEgo7
+''''
 ~~~
 
 *Using find command to filter and get a specific file*  
