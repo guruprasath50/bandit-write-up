@@ -67,17 +67,7 @@ pIwrPrtPN36QITSp3EQaw936yaFoFgAB
 NOTE: If we only want to see the hidden files: 
 The command :  
 ~~~
-ls -ld .?* 
-~~~  
-Will only list hidden files .  
-Explain :
-~~~
- -l     use a long listing format
- -d, --directory
-              list  directory entries instead of contents, and do not derefer‐
-              ence symbolic links
 
-.?* will only state hidden files 
 ~~~
 ___
 # Level 4 -> 5
@@ -102,15 +92,6 @@ koReBOKuIDDepwhWk7jZC0RTdopnAYKh
 Human readable text is a text that is written in ASCII format or a format readble to humans and not data or any binary format.  
 
 'file' command is used to determine the type of a file. .file type may be of human-readable(e.g. ‘ASCII text’) or MIME type(e.g. ‘text/plain; charset=us-ascii’). This command tests each argument in an attempt to categorize it.
-~~~
-file [option] [filename]
-file -b filename
-file *
-file directoryname/*
-~~~
-- -b, –brief : This is used to display just file type in brief mode.
-- \* option : Command displays the all files’s file type.
-- directoryname/* option : This is used to display all files filetypes in particular directory.
 ___
 # Level 5 -> 6
 ~~~
