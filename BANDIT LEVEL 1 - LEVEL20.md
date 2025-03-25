@@ -208,13 +208,7 @@ Gur cnffjbeq vf 5Gr8L4qetPEsPk8htqjhRK8XSP6x2RHh
 bandit11@bandit:~$ echo | cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
 The password is 5Te8Y4drgCRfCx8ugdwuEX8KFC6k2EUu
 ~~~
-*'Rot13' Encryption / Decryption*  
-Rot13 is an encryption/decryption algorithm that shifts each letter of the english alphabet by 13 places (leaving numbers the same).  
-Eg: A <-> N | B <-> O | C <-> P  
-This is a symmetric algo. as HELLO <-> URYYB and vice-versa.
-*The 'trace' Command*  
-The tr command in UNIX is a command line utility for translating or deleting characters. It supports a range of transformations including uppercase to lowercase, squeezing repeating characters, deleting specific characters and basic find and replace. It can be used with UNIX pipes to support more complex translation.  
-For additional info: https://shapeshed.com/unix-tr/
+
 ___
 # Level 12 -> 13
 ~~~
@@ -307,11 +301,6 @@ We can SSH into a server using the private key / the RSA key by:
 ~~~
 ssh -i {privatekey_file} {username}@{server} -p {port_no}
 ~~~
-The '-i' means identity that is used to take input of the private key from the file (The file can be in .txt format also).  
-For good info about SSH:  
-https://help.ubuntu.com/community/SSH/OpenSSH/Keys
-For info about Internet and Networking:  
-https://help.ubuntu.com/community/InternetAndNetworking
 ___
 # Level 14 -> 15
 ~~~
@@ -482,23 +471,7 @@ bandit19@bandit:~$ ./bandit20-do id
 uid=11019(bandit19) gid=11019(bandit19) euid=11020(bandit20) groups=11019(bandit19)
 band
 ~~~
-___
-# Level 20 -> 21
-~~~
-bandit20@bandit:~$ ./suconnect
-Usage: ./suconnect <portnumber>
-This program will connect to the given port on localhost using TCP. If it receives the correct password from the other side, the next password is transmitted back.
 
-bandit20@bandit:~$ ./suconnect 8000
-
-bandit20@bandit:~$ nc -lvp 8000
-listening on [any] 8000 ...
-connect to [127.0.0.1] from localhost [127.0.0.1] 48578
-GbKksEFF4yrVs6il55v6gwY5aVje5f0j
-gE269g2h3mw3pwgrj0Ha9Uoqen1c9DGr
-~~~
-*Running Parellel Tasks*  
-./suconnect is a setuid binary that runs the program on the port mentioned, and we need to open a parellel window along with it (tmux helps, but i did'nt use it). On the other window, we listen to the server running, which when I send the current password returns the next.
 ___
 # Usernames and Passwords
 
