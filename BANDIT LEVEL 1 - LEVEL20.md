@@ -6,7 +6,7 @@ ___
 # Level 0
 *To ssh onto a server*
 ~~~
-ssh {user}@{Host} -p {port_no}
+ssh bandit0@bandit.labs.overtehwire.org -p 2220
 ~~~
 *SSH (Secure Socket Shell)*
 Secure Shell (SSH) is a cryptographic protocol that provides communications security over a computer network, connecting an SSH client application with an SSH server. It is typically used to access shell accounts on remote servers. Shell accounts are typically available on Linux systems (but not only) and provide a user interface to the operating system’s services for the purpose of system management.
