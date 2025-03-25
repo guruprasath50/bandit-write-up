@@ -125,28 +125,6 @@ cat: ./maybehere07/file2: No such file or directory
 bandit5@bandit:~/inhere$ cat ./maybehere07/.file2
 DXjZPULLxYr17uwoI01bNLQbtFemEgo7
 ~~~
-
-*Using find command to filter and get a specific file*  
-  
-We can use 'find' command to get a precise file by filtering.  
-Eg: in the command used up, we searched uptill the 2nd sub-diectory (-maxdepth 2) and we searched for files (-type f) and not directories (-type d) and we found the file by the exact size of the file by (-size 1033).  
-For more info about the 'find' command:  
-https://linuxize.com/post/how-to-find-files-in-linux-using-the-command-line/
-
-*NOTE:* To print the contents of the whole directory tree i.e. all the sub folders and files in that sub folder, we can use
-~~~
-ls -R
-~~~ 
-*NOTE:* While printing size -s prints there are 2 sizes, one initially (first col) and the other later (after the date). The size mentioned in the first col is the block size which is a multiple of 4kb, to store the file with size <=4kb and the one mentioned later is the actual size of the file.  
-Another thing is when we use,  
-~~~
-ls -l -s
-~~~
-We get the size of the files in bytes eg: 1039. But when we use,  
-~~~
-ls -l -h  
-~~~
-We get sizes in human readable format eg: 1.1K
 ___
 # Level 6 -> 7
 ~~~
